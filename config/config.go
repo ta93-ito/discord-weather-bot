@@ -6,10 +6,10 @@ import (
 )
 
 type ConfigList struct {
-	Token  string
+	Token   string
 	BotName string
-	ApiKey string
-	Port   int
+	ApiKey  string
+	Port    int
 }
 
 var Config ConfigList
@@ -21,9 +21,9 @@ func init() {
 	}
 
 	Config = ConfigList{
-		Token:  cfg.Section("discord_bot").Key("token").String(),
+		Token:   cfg.Section("discord_bot").Key("token").String(),
 		BotName: cfg.Section("discord_bot").Key("bot_name").String(),
-		ApiKey: cfg.Section("openweather").Key("api_key").String(),
-		Port:   cfg.Section("web").Key("port").MustInt(),
+		ApiKey:  cfg.Section("openweather").Key("api_key").String(),
+		Port:    cfg.Section("web").Key("port").MustInt(),
 	}
 }

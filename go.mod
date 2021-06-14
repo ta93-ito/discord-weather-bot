@@ -1,4 +1,4 @@
-module github.com/ta93-ito/notify-absentee
+module github.com/ta93-ito/discord-weather-bot
 
 go 1.15
 

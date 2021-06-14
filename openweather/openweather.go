@@ -7,12 +7,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"time"
 )
 
 const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
 
-func GetCurrentWeather(city string) {
+func GetCurrentWeather(city string) string {
 	token := config.Config.ApiKey
 	//city := "Osaka,jp"
 
@@ -36,9 +35,10 @@ func GetCurrentWeather(city string) {
 		panic(err)
 	}
 
-	fmt.Printf("場所: %v\n", city)
-	fmt.Printf("時間: %s\n", time.Unix(int64(apiRes.Dt), 0))
-	fmt.Printf("天気: %s\n", apiRes.Weather[0].Main)
+	// fmt.Printf("場所: %v\n", city)
+	// fmt.Printf("時間: %s\n", time.Unix(int64(apiRes.Dt), 0))
+	// fmt.Printf("天気: %s\n", apiRes.Weather[0].Main)
+	return apiRes.Weather[0].Main
 }
 
 type OpenWeather struct {

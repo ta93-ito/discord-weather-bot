@@ -3,7 +3,8 @@ module github.com/ta93-ito/notify-absentee
 go 1.15
 
 require (
-	github.com/gin-gonic/gin v1.7.2 // indirect
+	github.com/antonholmquist/jason v1.0.0
+	github.com/gin-gonic/gin v1.7.2
 	github.com/go-playground/validator/v10 v10.6.1 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect

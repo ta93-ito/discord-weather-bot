@@ -8,6 +8,7 @@ import (
 type ConfigList struct {
 	ApiKey string
 	Port   int
+	Token  string
 }
 
 var Config ConfigList
@@ -21,5 +22,6 @@ func init() {
 	Config = ConfigList{
 		ApiKey: cfg.Section("openweather").Key("api_key").String(),
 		Port:   cfg.Section("web").Key("port").MustInt(),
+		Token: 	cfg.Section("discord_bot").Key("token").String(),
 	}
 }

@@ -3,7 +3,7 @@ package openweather
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ta93-ito/notify-absentee/config"
+	"github.com/ta93-ito/discord-weather-bot/config"
 	"io/ioutil"
 	"net/http"
 	"net/url"

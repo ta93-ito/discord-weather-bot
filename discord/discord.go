@@ -3,18 +3,12 @@ package discord
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	"github.com/ta93-ito/notify-absentee/config"
+	"github.com/ta93-ito/discord-weather-bot/config"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
-)
-
-var(
-	HelloWorld = "!helloworld"
-	ChannelVoiceJoin = "!vcjoin"
-	ChannelVoiceLeave = "!vcleave"
 )
 
 func DiscordNew() {

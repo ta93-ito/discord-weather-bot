@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/ta93-ito/notify-absentee/config"
+	"github.com/ta93-ito/discord-weather-bot/config"
 	"net/http"
 )
 

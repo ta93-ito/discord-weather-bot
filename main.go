@@ -1,10 +1,9 @@
 package main
 
 import (
-	"github.com/ta93-ito/notify-absentee/discord"
-	"github.com/ta93-ito/notify-absentee/openweather"
+	"github.com/ta93-ito/discord-weather-bot/discord"
+	"github.com/ta93-ito/discord-weather-bot/openweather"
 )
-
 var Endpoint = "api.openweathermap.org/data/2.5/weather"
 
 func main() {

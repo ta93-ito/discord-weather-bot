@@ -1,5 +1,46 @@
 package openweather
 
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/ta93-ito/notify-absentee/config"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+	"time"
+)
+
+const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
+
+func GetCurrentWeather(city string) {
+	token := config.Config.ApiKey
+	//city := "Osaka,jp"
+
+	values := url.Values{}
+	values.Set("q", city)
+	values.Set("appid", token)
+
+	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint, values.Encode()))
+	if err != nil {
+		panic(err)
+	}
+	defer res.Body.Close()
+
+	bytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	var apiRes OpenWeather
+	if err := json.Unmarshal(bytes, &apiRes); err != nil {
+		panic(err)
+	}
+
+	fmt.Printf("場所: %v\n", city)
+	fmt.Printf("時間: %s\n", time.Unix(int64(apiRes.Dt), 0))
+	fmt.Printf("天気: %s\n", apiRes.Weather[0].Main)
+}
+
 type OpenWeather struct {
 	Coord      Coord   `json:"coord"`
 	Weather    Weather `json:"weather"`

@@ -7,6 +7,7 @@ import (
 
 type ConfigList struct {
 	ApiKey string
+	Port   int
 }
 
 var Config ConfigList
@@ -14,10 +15,11 @@ var Config ConfigList
 func init() {
 	cfg, err := ini.Load("config.ini")
 	if err != nil {
-		log.Fatalf("Failed to read file\n", err)
+		log.Fatalf("Failed to read file: %v", err)
 	}
 
 	Config = ConfigList{
 		ApiKey: cfg.Section("openweather").Key("api_key").String(),
+		Port:   cfg.Section("web").Key("port").MustInt(),
 	}
 }

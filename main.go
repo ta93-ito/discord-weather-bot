@@ -1,21 +1,12 @@
 package main
 
 import (
-	"net/http"
-
-	"github.com/gin-gonic/gin"
+	"github.com/ta93-ito/notify-absentee/openweather"
 )
 
 var Endpoint = "api.openweathermap.org/data/2.5/weather"
 
 func main() {
-	handler()
-}
-
-func handler() {
-	router := gin.Default()
-	router.GET("/", func(c *gin.Context) {
-		c.String(http.StatusOK, "Hello World!")
-	})
-	router.Run(":8080")
+	openweather.GetCurrentWeather("Tokyo,jp")
+	StartWebServer()
 }

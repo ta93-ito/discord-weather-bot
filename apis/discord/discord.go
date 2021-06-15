@@ -3,8 +3,8 @@ package discord
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	openweather2 "github.com/ta93-ito/discord-weather-bot/apis/openweather"
 	"github.com/ta93-ito/discord-weather-bot/config"
-	"github.com/ta93-ito/discord-weather-bot/openweather"
 	"os"
 	"os/signal"
 	"syscall"
@@ -41,6 +41,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, m.Content)
 
-	weather := openweather.GetCurrentWeather(m.Content)
+	weather := openweather2.GetCurrentWeather(m.Content)
 	s.ChannelMessageSend(m.ChannelID, weather)
 }

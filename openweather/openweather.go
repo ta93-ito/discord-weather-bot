@@ -13,7 +13,6 @@ const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
 
 func GetCurrentWeather(city string) string {
 	token := config.Config.ApiKey
-	//city := "Osaka,jp"
 
 	values := url.Values{}
 	values.Set("q", city)
@@ -36,30 +35,17 @@ func GetCurrentWeather(city string) string {
 	}
 
 	// fmt.Printf("場所: %v\n", city)
-	// fmt.Printf("時間: %s\n", time.Unix(int64(apiRes.Dt), 0))
 	// fmt.Printf("天気: %s\n", apiRes.Weather[0].Main)
+
+	fmt.Println(apiRes)
 	return apiRes.Weather[0].Main
 }
 
 type OpenWeather struct {
-	Coord      Coord   `json:"coord"`
-	Weather    Weather `json:"weather"`
-	Base       string  `json:"base"`
-	Main       Main    `json:"main"`
-	Visibility int     `json:"visibility"`
-	Wind       Wind    `json:"wind"`
-	Clouds     Clouds  `json:"clouds"`
-	Dt         int     `json:"dt"`
-	Sys        Sys     `json:"sys"`
-	Timezone   int     `json:"timezone"`
-	Id         int     `json:"id"`
-	Name       string  `json:"name"`
-	Cod        int     `json:"cod"`
-}
-
-type Coord struct {
-	Lon float64 `json:"lon"`
-	Lat float64 `json:"lat"`
+	Weather  Weather `json:"weather"`
+	Main     Main    `json:"main"`
+	Timezone int     `json:"timezone"`
+	Name     string  `json:"name"`
 }
 
 type Weather []struct {
@@ -76,22 +62,4 @@ type Main struct {
 	TempMax   float64 `json:"temp_max"`
 	Pressure  int     `json:"pressure"`
 	Humidity  int     `json:"humidity"`
-}
-
-type Wind struct {
-	Speed float64 `json:"speed"`
-	Deg   int     `json:"deg"`
-}
-
-type Clouds struct {
-	All int `json:"all"`
-}
-
-type Sys struct {
-	Type    int     `json:"type"`
-	Id      int     `json:"id"`
-	Message float64 `json:"message"`
-	Country string  `json:"country"`
-	Sunrise int     `json:"sunrise"`
-	Sunset  int     `json:"sunset"`
 }

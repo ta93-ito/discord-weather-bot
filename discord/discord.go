@@ -7,6 +7,8 @@ import (
 	"github.com/ta93-ito/discord-weather-bot/openweather"
 	"os"
 	"os/signal"
+	"syscall"
+	"time"
 )
 
 func DiscordNew() {
@@ -28,20 +30,17 @@ func DiscordNew() {
 
 	fmt.Println("Bot is now running. Press CTRL-C to exit.")
 	ch := make(chan os.Signal, 1)
-	signal.Notify(ch, os.Interrupt)
-
-	go func() {
-		for c := range ch {
-			fmt.Println(c)
-			close(ch)
-			os.Exit(1)
-		}
-	}()
-
-	return
+	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
+	<-ch
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
+	if m.Author.Bot {
+		return
+	}
+
+	fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, m.Content)
+
 	weather := openweather.GetCurrentWeather(m.Content)
 	s.ChannelMessageSend(m.ChannelID, weather)
 }

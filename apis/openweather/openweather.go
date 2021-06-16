@@ -11,7 +11,7 @@ import (
 
 const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
 
-func GetCurrentWeather(city string) string {
+func GetCurrentWeather(city string) OpenWeather {
 	token := config.Config.ApiKey
 
 	values := url.Values{}
@@ -24,14 +24,14 @@ func GetCurrentWeather(city string) string {
 	}
 	defer res.Body.Close()
 
-	res_code_str := res.Status[0:1]
-
-	switch(res_code_str) {
-	case "4":
-		return "invalid statement!"
-	case "5":
-		return "something went wrong..."
-	}
+	//res_code_str := res.Status[0:1]
+	//
+	//switch(res_code_str) {
+	//case "4":
+	//	return "invalid statement!"
+	//case "5":
+	//	return "something went wrong..."
+	//}
 
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -43,7 +43,7 @@ func GetCurrentWeather(city string) string {
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
-	return apiRes.Weather[0].Main
+	return apiRes
 }
 
 type OpenWeather struct {

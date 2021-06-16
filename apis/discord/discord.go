@@ -36,12 +36,13 @@ func DiscordNew() {
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if strings.HasPrefix(m.Content, "/") {
-	    keyward := strings.Replace(m.Content, "/", "", 1)
-		fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, keyward)
-		weather := openweather2.GetCurrentWeather(keyward)
-		s.ChannelMessageSend(m.ChannelID, weather)
-	} else {
+	if !strings.HasPrefix(m.Content, "/") {
 		return
 	}
+	city := strings.Replace(m.Content, "/", "", 1)
+
+	fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, city)
+
+	weather := openweather2.GetCurrentWeather(city)
+	s.ChannelMessageSend(m.ChannelID, weather)
 }

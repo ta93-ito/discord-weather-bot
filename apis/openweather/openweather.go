@@ -24,14 +24,12 @@ func GetCurrentWeather(city string) OpenWeather {
 	}
 	defer res.Body.Close()
 
-	//res_code_str := res.Status[0:1]
-	//
-	//switch(res_code_str) {
-	//case "4":
-	//	return "invalid statement!"
-	//case "5":
-	//	return "something went wrong..."
-	//}
+	switch(res.Status[0:1]) {
+	case "4":
+		return "invalid statement!"
+	case "5":
+		return "something went wrong..."
+	}
 
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
@@ -43,7 +41,7 @@ func GetCurrentWeather(city string) OpenWeather {
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
-	return apiRes
+	return apiRes.Weather[0].Main
 }
 
 type OpenWeather struct {

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/ta93-ito/discord-weather-bot/config"
+	"github.com/ta93-ito/discord-weather-bot/apis/geocoding"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -12,10 +13,13 @@ import (
 const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
 
 func GetCurrentWeather(city string) string {
+	lat, lon := geocoding.Geocoding(city)
+
 	token := config.Config.ApiKey
 
 	values := url.Values{}
-	values.Set("q", city)
+	values.Set("lat", lat)
+	values.Set("lon", lon)
 	values.Set("appid", token)
 
 	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint, values.Encode()))

@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"syscall"
 	"time"
+	"strings"
 )
 
 func DiscordNew() {
@@ -35,12 +36,12 @@ func DiscordNew() {
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
-	if m.Author.Bot {
+	if strings.HasPrefix(m.Content, "/") {
+	    keyward := strings.Replace(m.Content, "/", "", 1)
+		fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, keyward)
+		weather := openweather2.GetCurrentWeather(keyward)
+		s.ChannelMessageSend(m.ChannelID, weather)
+	} else {
 		return
 	}
-
-	fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, m.Content)
-
-	weather := openweather2.GetCurrentWeather(m.Content)
-	s.ChannelMessageSend(m.ChannelID, weather)
 }

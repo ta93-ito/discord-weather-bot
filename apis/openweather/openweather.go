@@ -34,8 +34,6 @@ func GetCurrentWeather(city string) string {
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
-	// fmt.Printf("場所: %v\n", city)
-	// fmt.Printf("天気: %s\n", apiRes.Weather[0].Main)
 
 	res_code_str := strconv.Itoa(apiRes.Cod)[0:1]
 

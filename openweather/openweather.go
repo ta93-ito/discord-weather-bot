@@ -34,9 +34,6 @@ func GetCurrentWeather(city string) string {
 		panic(err)
 	}
 
-	// fmt.Printf("場所: %v\n", city)
-	// fmt.Printf("天気: %s\n", apiRes.Weather[0].Main)
-
 	fmt.Println(apiRes)
 	return apiRes.Weather[0].Main
 }

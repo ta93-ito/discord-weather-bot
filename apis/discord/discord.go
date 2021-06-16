@@ -3,13 +3,13 @@ package discord
 import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
-	openweather2 "github.com/ta93-ito/discord-weather-bot/apis/openweather"
+	"github.com/ta93-ito/discord-weather-bot/apis/openweather"
+	_ "github.com/ta93-ito/discord-weather-bot/apis/openweather"
 	"github.com/ta93-ito/discord-weather-bot/config"
 	"os"
 	"os/signal"
-	"syscall"
-	"time"
 	"strings"
+	"syscall"
 )
 
 func DiscordNew() {
@@ -41,8 +41,6 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	}
 	city := strings.Replace(m.Content, "/", "", 1)
 
-	fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, city)
-
-	weather := openweather2.GetCurrentWeather(city)
-	s.ChannelMessageSend(m.ChannelID, weather)
+	weather := openweather.GetCurrentWeather(city)
+	s.ChannelMessageSend(m.ChannelID, weather.Name)
 }

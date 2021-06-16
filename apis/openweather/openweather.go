@@ -11,7 +11,7 @@ import (
 
 const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
 
-func GetCurrentWeather(city string) string {
+func GetCurrentWeather(city string) OpenWeather {
 	token := config.Config.ApiKey
 
 	values := url.Values{}

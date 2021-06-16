@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"strconv"
 )
 
 const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
@@ -25,23 +24,24 @@ func GetCurrentWeather(city string) string {
 	}
 	defer res.Body.Close()
 
-	bytes, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		panic(err)
-	}
-
-	var apiRes OpenWeather
-	if err := json.Unmarshal(bytes, &apiRes); err != nil {
-		panic(err)
-	}
-
-	res_code_str := strconv.Itoa(apiRes.Cod)[0:1]
+	res_code_str := res.Status[0:1]
 
 	switch(res_code_str) {
 	case "4":
 		return "invalid statement!"
 	case "5":
 		return "something went wrong..."
+	}
+
+	bytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	var apiRes OpenWeather
+
+	if err := json.Unmarshal(bytes, &apiRes); err != nil {
+		panic(err)
 	}
 	return apiRes.Weather[0].Main
 }
@@ -51,7 +51,6 @@ type OpenWeather struct {
 	Main     Main    `json:"main"`
 	Timezone int     `json:"timezone"`
 	Name     string  `json:"name"`
-	Cod      int     `json:"cod,string"`
 }
 
 type Weather []struct {

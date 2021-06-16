@@ -42,5 +42,5 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 	city := strings.Replace(m.Content, "/", "", 1)
 
 	weather := openweather.GetCurrentWeather(city)
-	s.ChannelMessageSend(m.ChannelID, weather.Name)
+	s.ChannelMessageSend(m.ChannelID, weather)
 }

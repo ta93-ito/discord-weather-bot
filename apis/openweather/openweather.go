@@ -24,9 +24,7 @@ func GetCurrentWeather(city string) string {
 	}
 	defer res.Body.Close()
 
-	res_code_str := res.Status[0:1]
-
-	switch(res_code_str) {
+	switch(res.Status[0:1]) {
 	case "4":
 		return "invalid statement!"
 	case "5":

@@ -22,9 +22,6 @@ func Geocoding(city string) (string, string) {
 	if err := xml.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
-	fmt.Println(apiRes.Coordinate.Lat)
-	fmt.Println(apiRes.Coordinate.Lng)
-
 	return apiRes.Coordinate.Lat, apiRes.Coordinate.Lng
 }
 

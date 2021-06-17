@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/ta93-ito/discord-weather-bot/apis/openweather"
-	_ "github.com/ta93-ito/discord-weather-bot/apis/openweather"
 	"github.com/ta93-ito/discord-weather-bot/config"
 	"os"
 	"os/signal"

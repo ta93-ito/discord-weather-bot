@@ -3,8 +3,8 @@ package openweather
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ta93-ito/discord-weather-bot/config"
 	"github.com/ta93-ito/discord-weather-bot/apis/geocoding"
+	"github.com/ta93-ito/discord-weather-bot/config"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -28,7 +28,7 @@ func GetCurrentWeather(city string) string {
 	}
 	defer res.Body.Close()
 
-	switch(res.Status[0:1]) {
+	switch res.Status[0:1] {
 	case "4":
 		return "invalid statement!"
 	case "5":

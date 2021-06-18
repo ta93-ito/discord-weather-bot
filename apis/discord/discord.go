@@ -48,5 +48,17 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 		s.ChannelMessageSend(m.ChannelID, err.Error())
 		return
 	}
-	s.ChannelMessageSend(m.ChannelID, res.Forecast[0].Weather[0].Main)
+	s.ChannelMessageSend(m.ChannelID, SyntheticMessage(res.Forecasts, city))
+}
+
+func SyntheticMessage(list []openweather.Forecast, city string) string {
+	var each_weather []string
+	necessary_list := list[3:7]
+	for i := 0; i < len(necessary_list); i++ {
+		fomatted_dt := strings.Replace(necessary_list[i].DtTxt[5:10], "-", "月",-1) + "日" + " " + necessary_list[i].DtTxt[11:13] + "時"
+		each_weather = append(each_weather, fomatted_dt + " " + necessary_list[i].Weather[0].Main)
+	}
+
+	msg := city + "の天気\n" + strings.Join(each_weather, "\n")
+	return msg
 }

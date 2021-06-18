@@ -10,7 +10,8 @@ import (
 	"net/url"
 )
 
-const Endpoint = "https://api.openweathermap.org/data/2.5/weather"
+const Endpoint1 = "https://api.openweathermap.org/data/2.5/weather"
+const Endpoint2 = "https://api.openweathermap.org/data/2.5/forecast"
 
 func GetCurrentWeather(city string) string {
 	lat, lon := geocoding.Geocoding(city)
@@ -22,7 +23,7 @@ func GetCurrentWeather(city string) string {
 	values.Set("lon", lon)
 	values.Set("appid", token)
 
-	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint, values.Encode()))
+	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint1, values.Encode()))
 	if err != nil {
 		panic(err)
 	}
@@ -69,4 +70,50 @@ type Main struct {
 	TempMax   float64 `json:"temp_max"`
 	Pressure  int     `json:"pressure"`
 	Humidity  int     `json:"humidity"`
+}
+
+func GetForecast(city string) string {
+	lat, lon := geocoding.Geocoding(city)
+
+	token := config.Config.ApiKey
+
+	values := url.Values{}
+	values.Set("lat", lat)
+	values.Set("lon", lon)
+	values.Set("appid", token)
+
+	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint2, values.Encode()))
+	if err != nil {
+		panic(err)
+	}
+	defer res.Body.Close()
+
+	bytes, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		panic(err)
+	}
+
+	var apiRes Forecast
+
+	if err := json.Unmarshal(bytes, &apiRes); err != nil {
+		panic(err)
+	}
+	return apiRes[0].DtTxt
+}
+
+type Forecast []struct {
+	Main2 Main2  `json:"main"`
+	DtTxt string `json:"dt_txt"`
+}
+
+type Main2 struct {
+	Temp      float64 `json:"temp"`
+	FeelsLike float64 `json:"feels_like"`
+	TempMin   float64 `json:"temp_min"`
+	TempMax   float64 `json:"temp_max"`
+	Pressure  int     `json:"pressure"`
+	SeaLevel  int     `json:"sea_level"`
+	GrndLevel int     `json:"grnd_level"`
+	Humidity  int     `json:"humidity"`
+	TempKf    float64 `json:"temp_kf"`
 }

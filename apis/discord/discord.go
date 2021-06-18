@@ -43,10 +43,10 @@ func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
 
 	fmt.Printf("%s %s %s > %s\n", m.ChannelID, time.Now().Format(time.Stamp), m.Author.Username, city)
 
-	weather, err := openweather.GetCurrentWeather(city)
+	res, err := openweather.GetForecast(city)
 	if err != nil {
 		s.ChannelMessageSend(m.ChannelID, err.Error())
 		return
 	}
-	s.ChannelMessageSend(m.ChannelID, weather.Weather[0].Main)
+	s.ChannelMessageSend(m.ChannelID, res.Forecast[0].Weather[0].Main)
 }

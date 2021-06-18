@@ -72,7 +72,7 @@ type Main struct {
 	Humidity  int     `json:"humidity"`
 }
 
-func GetForcast(city string) string {
+func GetForecast(city string) string {
 	lat, lon := geocoding.Geocoding(city)
 
 	token := config.Config.ApiKey

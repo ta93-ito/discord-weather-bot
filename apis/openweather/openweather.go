@@ -8,12 +8,12 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
+	"errors"
 )
 
-const Endpoint1 = "https://api.openweathermap.org/data/2.5/weather"
-const Endpoint2 = "https://api.openweathermap.org/data/2.5/forecast"
+const Endpoint = "https://api.openweathermap.org/data/2.5/forecast"
 
-func GetCurrentWeather(city string) string {
+func GetForecast(city string) (ForecastList, error) {
 	lat, lon := geocoding.Geocoding(city)
 
 	token := config.Config.ApiKey
@@ -22,92 +22,48 @@ func GetCurrentWeather(city string) string {
 	values.Set("lat", lat)
 	values.Set("lon", lon)
 	values.Set("appid", token)
+	values.Set("cnt", "7")
 
-	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint1, values.Encode()))
+	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint, values.Encode()))
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 	defer res.Body.Close()
 
 	switch res.Status[0:1] {
 	case "4":
-		return "invalid statement!"
+		var nilRes ForecastList
+		return nilRes, errors.New("invalid statement!")
 	case "5":
-		return "something went wrong..."
+		var nilRes ForecastList
+		return nilRes, errors.New("something went wrong...")
 	}
 
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
 
-	var apiRes OpenWeather
+	var apiRes ForecastList
 
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
-		fmt.Println(err)
+		panic(err)
 	}
-
-	return apiRes.Weather[0].Main
+	var non_err error
+	return apiRes, non_err
 }
 
-type OpenWeather struct {
+type ForecastList struct {
+	Forecasts  []Forecast  `json:"list"`
+}
+
+type Forecast struct {
 	Weather  Weather `json:"weather"`
-	Main1    Main1   `json:"main"`
-	Timezone int     `json:"timezone"`
-	Name     string  `json:"name"`
+	Main     Main    `json:"main"`
+	DtTxt	 string  `json:"dt_txt"`
 }
 
-type Weather []struct {
-	Id          int    `json:"id"`
-	Main        string `json:"main"`
-	Description string `json:"description"`
-	Icon        string `json:"icon"`
-}
-
-type Main1 struct {
-	Temp      float64 `json:"temp"`
-	FeelsLike float64 `json:"feels_like"`
-	TempMin   float64 `json:"temp_min"`
-	TempMax   float64 `json:"temp_max"`
-	Pressure  int     `json:"pressure"`
-	Humidity  int     `json:"humidity"`
-}
-
-func GetForecast(city string) string {
-	lat, lon := geocoding.Geocoding(city)
-
-	token := config.Config.ApiKey
-
-	values := url.Values{}
-	values.Set("lat", lat)
-	values.Set("lon", lon)
-	values.Set("appid", token)
-
-	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint2, values.Encode()))
-	if err != nil {
-		fmt.Println(err)
-	}
-	defer res.Body.Close()
-
-	bytes, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	var apiRes Forecast
-
-	if err := json.Unmarshal(bytes, &apiRes); err != nil {
-		fmt.Println(err)
-	}
-	return apiRes[0].DtTxt
-}
-
-type Forecast []struct {
-	Main2 Main2  `json:"main"`
-	DtTxt string `json:"dt_txt"`
-}
-
-type Main2 struct {
+type Main struct {
 	Temp      float64 `json:"temp"`
 	FeelsLike float64 `json:"feels_like"`
 	TempMin   float64 `json:"temp_min"`
@@ -117,4 +73,11 @@ type Main2 struct {
 	GrndLevel int     `json:"grnd_level"`
 	Humidity  int     `json:"humidity"`
 	TempKf    float64 `json:"temp_kf"`
+}
+
+type Weather []struct {
+	Id          int    `json:"id"`
+	Main        string `json:"main"`
+	Description string `json:"description"`
+	Icon        string `json:"icon"`
 }

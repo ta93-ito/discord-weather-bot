@@ -25,7 +25,7 @@ func GetCurrentWeather(city string) string {
 
 	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint1, values.Encode()))
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer res.Body.Close()
 
@@ -38,20 +38,21 @@ func GetCurrentWeather(city string) string {
 
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	var apiRes OpenWeather
 
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
+
 	return apiRes.Weather[0].Main
 }
 
 type OpenWeather struct {
 	Weather  Weather `json:"weather"`
-	Main     Main    `json:"main"`
+	Main1    Main1   `json:"main"`
 	Timezone int     `json:"timezone"`
 	Name     string  `json:"name"`
 }
@@ -63,7 +64,7 @@ type Weather []struct {
 	Icon        string `json:"icon"`
 }
 
-type Main struct {
+type Main1 struct {
 	Temp      float64 `json:"temp"`
 	FeelsLike float64 `json:"feels_like"`
 	TempMin   float64 `json:"temp_min"`
@@ -84,19 +85,19 @@ func GetForecast(city string) string {
 
 	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint2, values.Encode()))
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer res.Body.Close()
 
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	var apiRes Forecast
 
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	return apiRes[0].DtTxt
 }

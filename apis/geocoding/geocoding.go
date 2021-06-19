@@ -8,14 +8,21 @@ import (
 	"net/url"
 )
 
-const Geocoding_Endpoint = "https://www.geocoding.jp/api"
+const GeocodingEndpoint = "https://www.geocoding.jp/api"
 
 func Geocoding(city string) (string, string) {
 	values := url.Values{}
 	values.Set("q", city)
 
-	res, _ :=  http.Get(fmt.Sprintf("%s?%s", Geocoding_Endpoint, values.Encode()))
+	res, err := http.Get(fmt.Sprintf("%s?%s", GeocodingEndpoint, values.Encode()))
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	bytes, _ := ioutil.ReadAll(res.Body)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	var apiRes Geocode
 
@@ -31,6 +38,6 @@ type Geocode struct {
 }
 
 type Coordinate struct {
-	Lat     string `xml:"lat"`
-	Lng     string `xml:"lng"`
+	Lat string `xml:"lat"`
+	Lng string `xml:"lng"`
 }

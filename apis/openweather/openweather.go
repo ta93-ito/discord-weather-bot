@@ -2,13 +2,13 @@ package openweather
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/ta93-ito/discord-weather-bot/apis/geocoding"
 	"github.com/ta93-ito/discord-weather-bot/config"
 	"io/ioutil"
 	"net/http"
 	"net/url"
-	"errors"
 )
 
 const Endpoint = "https://api.openweathermap.org/data/2.5/forecast"
@@ -50,18 +50,18 @@ func GetForecast(city string) (ForecastList, error) {
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
 		panic(err)
 	}
-	var non_err error
-	return apiRes, non_err
+	var nonErr error
+	return apiRes, nonErr
 }
 
 type ForecastList struct {
-	Forecasts  []Forecast  `json:"list"`
+	Forecasts []Forecast `json:"list"`
 }
 
 type Forecast struct {
-	Weather  Weather `json:"weather"`
-	Main     Main    `json:"main"`
-	DtTxt	 string  `json:"dt_txt"`
+	Main    Main    `json:"main"`
+	Weather Weather `json:"weather"`
+	DtTxt   string  `json:"dt_txt"`
 }
 
 type Main struct {

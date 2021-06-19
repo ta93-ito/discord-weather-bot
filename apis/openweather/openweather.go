@@ -23,6 +23,7 @@ func GetForecast(city string) (ForecastList, error) {
 	values.Set("lon", lon)
 	values.Set("appid", token)
 	values.Set("cnt", "7")
+	values.Set("lang", "ja")
 
 	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint, values.Encode()))
 	if err != nil {

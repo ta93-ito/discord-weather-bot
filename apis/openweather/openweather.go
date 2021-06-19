@@ -27,7 +27,7 @@ func GetForecast(city string) (ForecastList, error) {
 
 	res, err := http.Get(fmt.Sprintf("%s?%s", Endpoint, values.Encode()))
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	defer res.Body.Close()
 
@@ -42,13 +42,13 @@ func GetForecast(city string) (ForecastList, error) {
 
 	bytes, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 
 	var apiRes ForecastList
 
 	if err := json.Unmarshal(bytes, &apiRes); err != nil {
-		panic(err)
+		fmt.Println(err)
 	}
 	var nonErr error
 	return apiRes, nonErr

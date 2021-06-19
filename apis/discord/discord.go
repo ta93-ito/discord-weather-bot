@@ -14,6 +14,10 @@ import (
 
 func DiscordNew() {
 	discord, err := discordgo.New()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	discord.Token = config.Config.Token
 
 	if err != nil {
@@ -30,9 +34,12 @@ func DiscordNew() {
 	defer discord.Close()
 
 	fmt.Println("Bot is now running. Press CTRL-C to exit.")
+
 	ch := make(chan os.Signal, 1)
 	signal.Notify(ch, syscall.SIGINT, syscall.SIGTERM, os.Interrupt, os.Kill)
 	<-ch
+
+	return
 }
 
 func messageCreate(s *discordgo.Session, m *discordgo.MessageCreate) {
@@ -56,14 +63,11 @@ func SyntheticMessage(list []openweather.Forecast, city string) string {
 	var eachWeather []string
 	necessaryList := list[3:7]
 
-	fmt.Println(necessaryList)
-
 	for i := 0; i < len(necessaryList); i++ {
-		formattedDt := strings.Replace(necessaryList[i].DtTxt[5:10], "-", "月", -1) + fmt.Sprintf("日 %s時", necessaryList[i].DtTxt[11:13])
-		eachWeather = append(eachWeather, fmt.Sprintf("%s %s", formattedDt, necessaryList[i].Weather[0].Description))
+		formattedDt := fmt.Sprintf("%s %s", strings.Replace(necessaryList[i].DtTxt[5:10], "-", "/", -1), necessaryList[i].DtTxt[11:16])
+		eachWeather = append(eachWeather, fmt.Sprintf("%s %s %v°", formattedDt, necessaryList[i].Weather[0].Description, necessaryList[i].Main.Temp))
 	}
 
 	msg := fmt.Sprintf("%sの天気\n%s\n", city, strings.Join(eachWeather, "\n"))
-
 	return msg
 }

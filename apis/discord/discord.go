@@ -73,8 +73,10 @@ func SyntheticMessage(list []openweather.Forecast, city string) string {
 }
 
 func FormatDtTxt(dt_txt string) string {
-	split_dt := strings.Split((fmt.Sprintf("%s日 %s時", strings.Replace((dt_txt)[5:10], "-", "月", -1), (dt_txt)[11:13])), " ")
-	date, time := &split_dt[0], &split_dt[1]
+	split_date := dt_txt[5:10]
+	split_time := dt_txt[11:13]
+	date := &split_date
+	time := &split_time
 
 	if strings.HasPrefix(*date, "0") {
 		 *date = strings.Replace(*date, "0", "", 1)
@@ -82,5 +84,5 @@ func FormatDtTxt(dt_txt string) string {
 	if strings.HasPrefix(*time, "0") {
 		*time = strings.Replace(*time, "0", "", 1)
 	}
-	return fmt.Sprintf("%s %s", *date, *time)
+	return fmt.Sprintf("%s日 %s時", strings.Replace(*date, "-", "月", 1), *time)
 }

@@ -64,10 +64,23 @@ func SyntheticMessage(list []openweather.Forecast, city string) string {
 	necessaryList := list[3:7]
 
 	for i := 0; i < len(necessaryList); i++ {
-		formattedDt := fmt.Sprintf("%s日 %s時", strings.Replace(necessaryList[i].DtTxt[5:10], "-", "月", -1), necessaryList[i].DtTxt[11:13])
+		formattedDt := FormatDtTxt(necessaryList[i].DtTxt)
 		eachWeather = append(eachWeather, fmt.Sprintf("%s %s", formattedDt, necessaryList[i].Weather[0].Description))
 	}
 
 	msg := fmt.Sprintf("%sの天気\n%s\n", city, strings.Join(eachWeather, "\n"))
 	return msg
+}
+
+func FormatDtTxt(dt_txt string) string {
+	split_dt := strings.Split((fmt.Sprintf("%s日 %s時", strings.Replace((dt_txt)[5:10], "-", "月", -1), (dt_txt)[11:13])), " ")
+	date, time := &split_dt[0], &split_dt[1]
+
+	if strings.HasPrefix(*date, "0") {
+		 *date = strings.Replace(*date, "0", "", 1)
+	}
+	if strings.HasPrefix(*time, "0") {
+		*time = strings.Replace(*time, "0", "", 1)
+	}
+	return fmt.Sprintf("%s %s", *date, *time)
 }

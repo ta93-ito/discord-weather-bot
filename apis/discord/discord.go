@@ -64,7 +64,7 @@ func SyntheticMessage(list []openweather.Forecast, city string) string {
 	necessaryList := list[3:7]
 
 	for i := 0; i < len(necessaryList); i++ {
-		formattedDt := fmt.Sprintf("%s %s", strings.Replace(necessaryList[i].DtTxt[5:10], "-", "/", -1), necessaryList[i].DtTxt[11:16])
+		formattedDt := fmt.Sprintf("%s日 %s時", strings.Replace(necessaryList[i].DtTxt[5:10], "-", "月", -1), necessaryList[i].DtTxt[11:13])
 		eachWeather = append(eachWeather, fmt.Sprintf("%s %s", formattedDt, necessaryList[i].Weather[0].Description))
 	}
 

@@ -2,8 +2,9 @@ package server
 
 import (
 	"fmt"
-	"github.com/ta93-ito/discord-weather-bot/config"
 	"net/http"
+
+	"github.com/ta93-ito/discord-weather-bot/config"
 )
 
 func handler(w http.ResponseWriter, r *http.Request) {

@@ -2,14 +2,15 @@ package discord
 
 import (
 	"fmt"
-	"github.com/bwmarrin/discordgo"
-	"github.com/ta93-ito/discord-weather-bot/apis/openweather"
-	"github.com/ta93-ito/discord-weather-bot/config"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
 	"time"
+
+	"github.com/bwmarrin/discordgo"
+	"github.com/ta93-ito/discord-weather-bot/apis/openweather"
+	"github.com/ta93-ito/discord-weather-bot/config"
 )
 
 func DiscordNew() {
@@ -75,14 +76,14 @@ func SyntheticMessage(list []openweather.Forecast, city string) string {
 func FormatDtTxt(dt_txt string) string {
 	split_date := dt_txt[5:10]
 	split_time := dt_txt[11:13]
-	date := &split_date
-	time := &split_time
+	date := split_date
+	time := split_time
 
-	if strings.HasPrefix(*date, "0") {
-		 *date = strings.Replace(*date, "0", "", 1)
+	if strings.HasPrefix(date, "0") {
+		date = strings.Replace(date, "0", "", 1)
 	}
-	if strings.HasPrefix(*time, "0") {
-		*time = strings.Replace(*time, "0", "", 1)
+	if strings.HasPrefix(time, "0") {
+		time = strings.Replace(time, "0", "", 1)
 	}
-	return fmt.Sprintf("%s日 %s時", strings.Replace(*date, "-", "月", 1), *time)
+	return fmt.Sprintf("%s日 %s時", strings.Replace(date, "-", "月", 1), time)
 }
